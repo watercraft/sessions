@@ -70,6 +70,8 @@ type Session interface {
 	Flashes(vars ...string) []interface{}
 	// Options sets confuguration for a session.
 	Options(Options)
+	// IsNew() returns true if the session is new.
+	IsNew() bool
 }
 
 // Sessions is a Middleware that maps a session.Session service into the Martini handler chain.
@@ -143,6 +145,10 @@ func (s *session) Options(options Options) {
 		Secure:   options.Secure,
 		HttpOnly: options.HttpOnly,
 	}
+}
+
+func (s *session) IsNew() bool {
+	return s.Session().IsNew
 }
 
 func (s *session) Session() *sessions.Session {
